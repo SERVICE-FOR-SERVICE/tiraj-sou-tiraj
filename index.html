@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rafle Tout Sa Nou Jwenn</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    .header {
+      background: #0b4ea2;
+      color: white;
+      padding: 22px 18px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .header p {
+      margin: 7px 0 0;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 25px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .prize {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .prize h2 {
+      margin: 0 0 8px;
+      color: #0b4ea2;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccd4df;
+      border-radius: 9px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #0b4ea2;
+    }
+
+    .total {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eef5ff;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #0b4ea2;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #083d80;
+    }
+
+    .note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 13px;
+      color: #667085;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <h1>Rafle Tout Sa Nou Jwenn</h1>
+    <p>Grenn Chans Ou</p>
+  </header>
+
+  <main class="container">
+
+    <div class="card">
+
+      <div class="prize">
+        <h2>Tiraj pou yon moto</h2>
+        <div>🏍️ Dayun 125cc tounèf</div>
+        <div class="price">100 Goud / tikè</div>
+      </div>
+
+      <label for="name">Non konplè</label>
+      <input
+        type="text"
+        id="name"
+        placeholder="Ekri non konplè ou"
+      >
+
+      <label for="phone">Telefòn / WhatsApp</label>
+      <input
+        type="tel"
+        id="phone"
+        placeholder="Egzanp: 509XXXXXXXX"
+      >
+
+      <label for="quantity">Kantite tikè</label>
+      <input
+        type="number"
+        id="quantity"
+        min="1"
+        max="5000"
+        value="1"
+      >
+
+      <label for="payment">Metòd peman</label>
+      <select id="payment">
+        <option value="">Chwazi metòd peman</option>
+        <option value="moncash">MonCash</option>
+        <option value="natcash">NatCash</option>
+      </select>
+
+      <div class="total">
+        Total: <span id="total">100</span> Goud
+      </div>
+
+      <button id="payButton">
+        PEYE KOUNYE A
+      </button>
+
+      <div class="note">
+        Apre peman an konfime, sistèm nan ap kreye
+        tikè ou otomatikman.
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const quantityInput = document.getElementById("quantity");
+    const totalElement = document.getElementById("total");
+    const payButton = document.getElementById("payButton");
+
+    const PRICE = 100;
+
+    function updateTotal() {
+      let quantity = parseInt(quantityInput.value) || 1;
+
+      if (quantity < 1) {
+        quantity = 1;
+        quantityInput.value = 1;
+      }
+
+      totalElement.textContent = quantity * PRICE;
+    }
+
+    quantityInput.addEventListener("input", updateTotal);
+
+    payButton.addEventListener("click", function () {
+      alert("Nou pral konekte peman MonCash ak NatCash nan pwochen etap la.");
+    });
+  </script>
+
+</body>
+  </html>
