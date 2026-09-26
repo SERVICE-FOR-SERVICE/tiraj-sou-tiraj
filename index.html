@@ -204,9 +204,95 @@
 
     quantityInput.addEventListener("input", updateTotal);
 
-    payButton.addEventListener("click", function () {
-      alert("Nou pral konekte peman MonCash ak NatCash nan pwochen etap la.");
-    });
+<script>
+  payButton.addEventListener("click", async function () {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const quantity = parseInt(quantityInput.value) || 0;
+    const payment = document.getElementById("payment").value;
+
+    if (!name || !phone || !quantity || !payment) {
+      alert("Tanpri ranpli tout enfòmasyon yo.");
+      return;
+    }
+
+    if (quantity < 1 || quantity > 5000) {
+      alert("Kantite tikè a dwe ant 1 ak 5000.");
+      return;
+    }
+
+    payButton.disabled = true;
+    payButton.textContent = "Y ap prepare peman an...";
+
+    const SUPABASE_URL =
+      "https://ixttkvbxczdahaugsosw.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
+
+    try {
+      const orderResponse = await fetch(
+        `${SUPABASE_URL}/functions/v1/create-order`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            full_name: name,
+            phone: phone,
+            quantity: quantity,
+            payment_method: payment
+          })
+        }
+      );
+
+      const orderData = await orderResponse.json();
+
+      if (!orderResponse.ok || !orderData.order_id) {
+        throw new Error(
+          orderData.error || "Order creation failed"
+        );
+      }
+
+      const paymentResponse = await fetch(
+        `${SUPABASE_URL}/functions/v1/create-kobara-payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({
+            order_id: orderData.order_id
+          })
+        }
+      );
+
+      const paymentData = await paymentResponse.json();
+
+      if (!paymentResponse.ok || !paymentData.checkout_url) {
+        throw new Error(
+          paymentData.error || "Payment creation failed"
+        );
+      }
+
+      window.location.href = paymentData.checkout_url;
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Gen yon pwoblèm pandan preparasyon peman an. Tanpri eseye ankò."
+      );
+
+      payButton.disabled = false;
+      payButton.textContent = "PEYE KOUNYE A";
+    }
+  });
   </script>
 
 </body>
