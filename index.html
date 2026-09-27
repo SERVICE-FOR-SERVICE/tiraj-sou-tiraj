@@ -203,6 +203,7 @@
     }
 
     quantityInput.addEventListener("input", updateTotal);
+    window.addEventListener("pageshow", updateTotal);
 
   payButton.addEventListener("click", async function () {
     const name = document.getElementById("name").value.trim();
