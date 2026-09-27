@@ -377,5 +377,79 @@
 
   </script>
 
+  <div id="ticketActions" style="display:none; margin-top:20px; text-align:center;">
+  <button
+    id="shareTicketBtn"
+    type="button"
+    style="padding:12px 18px; margin:5px; border:0; border-radius:8px; cursor:pointer;"
+  >
+    📤 Pataje biyè mwen yo
+  </button>
+
+  <button
+    id="saveTicketBtn"
+    type="button"
+    style="padding:12px 18px; margin:5px; border:0; border-radius:8px; cursor:pointer;"
+  >
+    💾 Sove biyè mwen yo
+  </button>
+</div>
+
+<style>
+  @media print {
+    #ticketActions {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const ticketActions = document.getElementById("ticketActions");
+  const shareTicketBtn = document.getElementById("shareTicketBtn");
+  const saveTicketBtn = document.getElementById("saveTicketBtn");
+
+  function showTicketActionsWhenConfirmed() {
+    if (document.body.innerText.includes("Peman konfime")) {
+      ticketActions.style.display = "block";
+    }
+  }
+
+  shareTicketBtn.addEventListener("click", async () => {
+    const ticketUrl = window.location.href;
+
+    const shareData = {
+      title: "Biyè pa w la - Rafle Tout Sa Nou Jwenn",
+      text: "Men biyè mwen yo pou Rafle Tout Sa Nou Jwenn.",
+      url: ticketUrl
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(ticketUrl);
+        alert("Lyen biyè a kopye. Ou ka kole li nan WhatsApp oswa lòt aplikasyon.");
+      }
+    } catch (error) {
+      console.log("Pataje anile oswa pa disponib.");
+    }
+  });
+
+  saveTicketBtn.addEventListener("click", () => {
+    window.print();
+  });
+
+  const observer = new MutationObserver(() => {
+    showTicketActionsWhenConfirmed();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+  showTicketActionsWhenConfirmed();
+</script>
 </body>
   </html>
