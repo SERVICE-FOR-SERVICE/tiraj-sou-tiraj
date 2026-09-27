@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bilè ou - Rafle Tout Sa Nou Jwenn</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    .header {
+      background: #0b4ea2;
+      color: white;
+      padding: 22px 18px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .header p {
+      margin: 7px 0 0;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 25px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .title {
+      text-align: center;
+      color: #0b4ea2;
+      margin-bottom: 8px;
+    }
+
+    .status {
+      text-align: center;
+      margin: 18px 0;
+      padding: 15px;
+      border-radius: 10px;
+      background: #eef5ff;
+      font-weight: bold;
+    }
+
+    .info {
+      margin-top: 18px;
+      line-height: 1.7;
+    }
+
+    .tickets {
+      margin-top: 22px;
+    }
+
+    .ticket {
+      border: 2px solid #0b4ea2;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 12px;
+      text-align: center;
+      background: #f8fbff;
+    }
+
+    .ticket-label {
+      font-size: 13px;
+      color: #667085;
+    }
+
+    .ticket-number {
+      font-size: 30px;
+      font-weight: bold;
+      color: #0b4ea2;
+      margin-top: 5px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #667085;
+      margin-top: 20px;
+    }
+
+    .error {
+      background: #fff1f1;
+      color: #b42318;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .note {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 13px;
+      color: #667085;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #0b4ea2;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <h1>Rafle Tout Sa Nou Jwenn</h1>
+    <p>Grenn Chans Ou</p>
+  </header>
+
+  <main class="container">
+
+    <div class="card">
+
+      <h2 class="title">Bilè pa w la</h2>
+
+      <div id="status" class="status">
+        N ap verifye peman an...
+      </div>
+
+      <div id="customerInfo" class="info"></div>
+
+      <div id="tickets" class="tickets"></div>
+
+      <div id="error" class="error" style="display:none;"></div>
+
+      <div class="loading" id="loading">
+        Tanpri tann pandan sistèm nan ap verifye peman an.
+      </div>
+
+      <div class="note">
+        Se sèlman peman ki konfime ki bay tikè.
+        Pa fèmen paj la pandan sistèm nan ap verifye peman an.
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://ixttkvbxczdahaugsosw.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
+
+    const statusElement =
+      document.getElementById("status");
+
+    const customerInfo =
+      document.getElementById("customerInfo");
+
+    const ticketsElement =
+      document.getElementById("tickets");
+
+    const loadingElement =
+      document.getElementById("loading");
+
+    const errorElement =
+      document.getElementById("error");
+
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const orderId =
+      params.get("order_id");
+
+
+    if (!orderId) {
+
+      statusElement.textContent =
+        "Pa gen nimewo lòd la.";
+
+      loadingElement.style.display =
+        "none";
+
+      errorElement.style.display =
+        "block";
+
+      errorElement.textContent =
+        "Nou pa jwenn enfòmasyon peman an.";
+
+    } else {
+
+      checkPayment();
+
+    }
+
+
+    async function checkPayment() {
+
+      try {
+
+        const response = await fetch(
+          `${SUPABASE_URL}/functions/v1/get-ticket-status?order_id=${encodeURIComponent(orderId)}`,
+          {
+            method: "GET",
+
+            headers: {
+              "apikey": SUPABASE_KEY,
+              "Authorization":
+                `Bearer ${SUPABASE_KEY}`
+            }
+          }
+        );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Verification failed"
+          );
+
+        }
+
+
+        if (data.payment_status === "confirmed") {
+
+          statusElement.textContent =
+            "Peman konfime ✓";
+
+          statusElement.style.background =
+            "#ecfdf3";
+
+          statusElement.style.color =
+            "#027a48";
+
+
+          loadingElement.style.display =
+            "none";
+
+
+          customerInfo.innerHTML = `
+            <strong>Non:</strong>
+            ${escapeHtml(data.full_name)}
+            <br>
+
+            <strong>Kantite tikè:</strong>
+            ${data.quantity}
+            <br>
+
+            <strong>Total:</strong>
+            ${data.amount} Gdes
+          `;
+
+
+          ticketsElement.innerHTML =
+            "<h3>🎟️ Nimewo tikè ou yo</h3>";
+
+
+          for (const ticket of data.tickets) {
+
+            const ticketBox =
+              document.createElement("div");
+
+            ticketBox.className =
+              "ticket";
+
+
+            const label =
+              document.createElement("div");
+
+            label.className =
+              "ticket-label";
+
+            label.textContent =
+              "TIKÈ";
+
+
+            const number =
+              document.createElement("div");
+
+            number.className =
+              "ticket-number";
+
+            number.textContent =
+              "#" +
+              String(ticket)
+                .padStart(4, "0");
+
+
+            ticketBox.appendChild(label);
+
+            ticketBox.appendChild(number);
+
+            ticketsElement.appendChild(
+              ticketBox
+            );
+
+          }
+
+
+        } else {
+
+          statusElement.textContent =
+            "Peman an poko konfime";
+
+          loadingElement.textContent =
+            "N ap verifye ankò...";
+
+
+          setTimeout(
+            checkPayment,
+            5000
+          );
+
+        }
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        statusElement.textContent =
+          "Nou pa ka verifye peman an kounye a.";
+
+        loadingElement.style.display =
+          "none";
+
+        errorElement.style.display =
+          "block";
+
+        errorElement.textContent =
+          "Tanpri tann kèk segonn epi eseye ankò.";
+
+      }
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+  </script>
+
+</body>
+  </html>
