@@ -257,8 +257,13 @@
         );
       }
 
+      let paymentFunction = "create-kobara-payment";
+
+if (payment === "moncash") {
+  paymentFunction = "create-moncash-payment";
+    }
       const paymentResponse = await fetch(
-        `${SUPABASE_URL}/functions/v1/create-kobara-payment`,
+        '${SUPABASE_URL}/functions/v1/${paymentFunction}'
         {
           method: "POST",
           headers: {
