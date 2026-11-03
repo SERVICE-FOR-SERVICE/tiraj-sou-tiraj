@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="ht">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="ht"><head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Rafle Tout Sa Nou Jwenn</title>  <style>
 
-  <title>Rafle Tout Sa Nou Jwenn</title>
-
-  <style>
     * {
       box-sizing: border-box;
     }
@@ -14,87 +7,95 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #1e293b;
+      background: #f4f7fb;
+      color: #172033;
     }
 
-    header {
-      background: #075985;
+    .header {
+      background: #0b4ea2;
       color: white;
+      padding: 22px 18px;
       text-align: center;
-      padding: 28px 15px;
     }
 
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
     }
 
-    header p {
-      margin: 5px 0;
+    .header p {
+      margin: 7px 0 0;
+      font-size: 15px;
     }
 
     .container {
-      max-width: 650px;
+      max-width: 520px;
       margin: 25px auto;
-      padding: 0 15px;
+      padding: 0 16px;
     }
 
     .card {
       background: white;
+      border-radius: 16px;
       padding: 22px;
-      margin-bottom: 20px;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     }
 
-    h2 {
-      color: #075985;
-      margin-top: 0;
-    }
-
-    .moto {
+    .prize {
       text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 15px;
-      background: #e0f2fe;
-      border-radius: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
+    }
+
+    .prize h2 {
+      margin: 0 0 8px;
+      color: #0b4ea2;
     }
 
     .price {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
-      color: #047857;
-      text-align: center;
-      margin: 15px 0;
+      margin-top: 12px;
     }
 
     label {
       display: block;
+      margin-top: 16px;
+      margin-bottom: 7px;
       font-weight: bold;
-      margin: 14px 0 6px;
     }
 
     input,
     select {
-      display: block;
       width: 100%;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      padding: 13px;
+      border: 1px solid #ccd4df;
+      border-radius: 9px;
       font-size: 16px;
-      background: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #0b4ea2;
+    }
+
+    .total {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eef5ff;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
     }
 
     button {
       width: 100%;
+      margin-top: 20px;
+      padding: 15px;
       border: none;
-      border-radius: 8px;
-      padding: 14px;
-      margin-top: 18px;
-      background: #0284c7;
+      border-radius: 10px;
+      background: #0b4ea2;
       color: white;
       font-size: 17px;
       font-weight: bold;
@@ -102,745 +103,382 @@
     }
 
     button:hover {
-      background: #0369a1;
+      background: #083d80;
     }
 
     button:disabled {
-      background: #94a3b8;
+      opacity: 0.7;
       cursor: not-allowed;
     }
 
-    .payment-box {
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 15px 0;
-    }
-
-    .payment-number {
-      font-size: 24px;
-      font-weight: bold;
-      color: #047857;
+    .note {
+      margin-top: 18px;
       text-align: center;
-      padding: 10px;
-      overflow-wrap: anywhere;
-    }
-
-    .notice {
-      background: #fff7ed;
-      border-left: 4px solid #f97316;
-      padding: 12px;
-      border-radius: 5px;
-      line-height: 1.6;
-    }
-
-    .message {
-      padding: 13px;
-      margin-top: 15px;
-      border-radius: 8px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .success {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .error {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .info {
-      background: #e0f2fe;
-      color: #075985;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .small {
-      color: #64748b;
-      font-size: 14px;
+      font-size: 13px;
+      color: #667085;
       line-height: 1.5;
     }
 
-    footer {
-      text-align: center;
-      color: #64748b;
-      padding: 20px;
-      font-size: 14px;
-    }
-  </style>
-</head>
+  </style></head><body>  <header class="header"><h1>Rafle Tout Sa Nou Jwenn</h1>
 
-<body>
+<p>Grenn Chans Ou</p>
 
-<header>
-  <h1>🎟️ Rafle Tout Sa Nou Jwenn</h1>
-  <p>Grenn Chans Ou</p>
-  <p>Yon chans pou w genyen gwo pri a!</p>
-</header>
+  </header>  <main class="container"><div class="card">
 
-<main class="container">
+  <div class="prize">
 
-  <section class="card">
-    <div class="moto">
-      🏍️ Tiraj pou yon moto Dayun 125cc tounèf
+    <h2>Tiraj pou yon moto</h2>
+
+    <div>
+      🏍️ Dayun 125cc tounèf
     </div>
 
-    <p class="price">100 Goud pou chak tikè</p>
-
-    <p>
-      Ranpli enfòmasyon ou yo, chwazi metòd peman ou,
-      epi swiv enstriksyon yo pou voye prèv peman an.
-    </p>
-  </section>
-
-  <section class="card" id="orderCard">
-    <h2>1. Enskri pou raf la</h2>
-
-    <form id="orderForm">
-
-      <label for="fullName">Non konplè</label>
-      <input
-        type="text"
-        id="fullName"
-        maxlength="100"
-        autocomplete="name"
-        required
-        placeholder="Antre non konplè ou"
-      >
-
-      <label for="phone">Nimewo telefòn ou</label>
-      <input
-        type="tel"
-        id="phone"
-        maxlength="30"
-        autocomplete="tel"
-        required
-        placeholder="Egzanp: 509XXXXXXXX"
-      >
-
-      <label for="quantity">Kantite tikè</label>
-      <input
-        type="number"
-        id="quantity"
-        min="1"
-        max="5000"
-        value="1"
-        required
-      >
-
-      <p class="price">
-        Total pou peye: <span id="total">100</span> Goud
-      </p>
-
-      <label for="payment">Chwazi metòd peman</label>
-      <select id="payment" required>
-        <option value="">Chwazi metòd peman</option>
-        <option value="moncash">MonCash</option>
-        <option value="natcash">NatCash</option>
-      </select>
-
-      <button type="submit" id="orderButton">
-        Kontinye ak peman
-      </button>
-
-      <div id="orderMessage" class="message hidden"></div>
-
-    </form>
-  </section>
-
-  <section class="card hidden" id="paymentCard">
-    <h2>2. Fè peman ou</h2>
-
-    <div id="orderDetails" class="message info"></div>
-
-    <div class="payment-box">
-      <p id="paymentTitle"></p>
-      <div class="payment-number" id="paymentNumber"></div>
-      <p>
-        Voye montan egzak la sou nimewo ki parèt anwo a.
-        Kenbe resi tranzaksyon ou an.
-      </p>
+    <div class="price">
+      100 Goud / tikè
     </div>
 
-    <div class="notice">
-      <strong>Enpòtan:</strong>
-      Apre ou fin fè peman an, ranpli fòm ki anba a epi
-      voye foto resi ou. Administratè a dwe verifye peman an
-      anvan tikè yo ka atribye ba ou.
-    </div>
+  </div>
 
-    <h2 style="margin-top:25px;">3. Voye prèv peman an</h2>
+  <label for="name">
+    Non konplè
+  </label>
 
-    <form id="proofForm">
+  <input
+    type="text"
+    id="name"
+    placeholder="Ekri non konplè ou"
+  >
 
-      <label for="transactionPhone">
-        Nimewo telefòn ki te fè tranzaksyon an
-      </label>
-      <input
-        type="tel"
-        id="transactionPhone"
-        maxlength="30"
-        required
-        placeholder="Nimewo MonCash oswa NatCash ki te peye a"
-      >
+  <label for="phone">
+    Telefòn / WhatsApp
+  </label>
 
-      <label for="transactionReference">
-        Referans tranzaksyon
-      </label>
-      <input
-        type="text"
-        id="transactionReference"
-        maxlength="150"
-        required
-        placeholder="Antre referans ki sou resi a"
-      >
+  <input
+    type="tel"
+    id="phone"
+    placeholder="Egzanp: 509XXXXXXXX"
+  >
 
-      <label for="receipt">
-        Foto resi peman an
-      </label>
-      <input
-        type="file"
-        id="receipt"
-        accept="image/jpeg,image/png,image/webp"
-        required
-      >
+  <label for="quantity">
+    Kantite tikè
+  </label>
 
-      <p class="small">
-        Fòma ki aksepte: JPG, PNG oswa WEBP.
-        Gwosè maksimòm: 5 MB. Ou gen omaksimòm 2 tantativ
-        pou voye prèv pou menm kòmand lan.
-      </p>
+  <input
+    type="number"
+    id="quantity"
+    min="1"
+    max="5000"
+    value="1"
+  >
 
-      <button type="submit" id="proofButton">
-        Voye prèv peman an
-      </button>
+  <label for="payment">
+    Metòd peman
+  </label>
 
-      <div id="proofMessage" class="message hidden"></div>
+  <select id="payment">
 
-    </form>
+    <option value="">
+      Chwazi metòd peman
+    </option>
 
-    <button
-      type="button"
-      id="newOrderButton"
-      class="hidden"
-      style="background:#475569;"
-    >
-      Kòmanse yon lòt kòmand
-    </button>
+    <option value="moncash">
+      MonCash
+    </option>
 
-  </section>
+  </select>
 
-  <section class="card">
-    <h2>Enfòmasyon enpòtan</h2>
-    <ul>
-      <li>Chak tikè koute 100 Goud.</li>
-      <li>Verifye nimewo peman an anvan ou voye lajan.</li>
-      <li>Kenbe resi tranzaksyon ou an.</li>
-      <li>Voye prèv peman an pou administratè a ka verifye li.</li>
-      <li>Pa gen tikè ki garanti anvan peman an fin apwouve.</li>
-    </ul>
-  </section>
+  <div class="total">
 
-</main>
+    Total:
+    <span id="total">100</span>
+    Goud
 
-<footer>
-  © Rafle Tout Sa Nou Jwenn
-</footer>
+  </div>
 
-<script>
-  const SUPABASE_URL =
-    "https://ixttkvbxczdahaugsosw.supabase.co";
+  <button id="payButton">
+    PEYE KOUNYE A
+  </button>
 
-  const SUPABASE_KEY =
-    "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
+  <div class="note">
 
-  const TICKET_PRICE = 100;
-  // Idantifyan inik navigatè a
-  const DEVICE_TOKEN_KEY = "rafle_device_token";
-  let deviceToken = null;
+    Apre peman an konfime, sistèm nan ap kreye
+    tikè ou otomatikman.
 
-  try {
-    deviceToken = localStorage.getItem(DEVICE_TOKEN_KEY);
+  </div>
 
-    if (!deviceToken) {
-      deviceToken = crypto.randomUUID();
-      localStorage.setItem(DEVICE_TOKEN_KEY, deviceToken);
-    }
-  } catch (error) {
-    deviceToken = crypto.randomUUID();
-  }
-  const MAX_TICKETS = 5000;
-  const MAX_RECEIPT_SIZE = 5 * 1024 * 1024;
+</div>
 
-  const PAYMENT_NUMBERS = {
-    moncash: "3196-3122",
-    natcash: "4099-3498"
-  };
+  </main>  <script>
 
-  const orderForm = document.getElementById("orderForm");
-  const proofForm = document.getElementById("proofForm");
+    const quantityInput =
+      document.getElementById("quantity");
 
-  const orderCard = document.getElementById("orderCard");
-  const paymentCard = document.getElementById("paymentCard");
+    const totalElement =
+      document.getElementById("total");
 
-  const orderButton = document.getElementById("orderButton");
-  const proofButton = document.getElementById("proofButton");
+    const payButton =
+      document.getElementById("payButton");
 
-  const orderMessage = document.getElementById("orderMessage");
-  const proofMessage = document.getElementById("proofMessage");
+    const paymentInput =
+      document.getElementById("payment");
 
-  const quantityInput = document.getElementById("quantity");
-  const paymentInput = document.getElementById("payment");
+    const PRICE = 100;
 
-  let currentOrder = null;
-  let attemptsRemaining = 2;
-  let submittingOrder = false;
-  let submittingProof = false;
 
-  function showMessage(element, text, type) {
-    element.textContent = text;
-    element.className = "message " + type;
-    element.classList.remove("hidden");
-  }
+    function updateTotal() {
 
-  function hideMessage(element) {
-    element.textContent = "";
-    element.className = "message hidden";
-  }
+      let quantity =
+        parseInt(quantityInput.value, 10) || 1;
 
-  function updateTotal() {
-    let quantity = Number(quantityInput.value);
+      if (quantity < 1) {
 
-    if (!Number.isInteger(quantity) || quantity < 1) {
-      quantity = 1;
+        quantity = 1;
+
+        quantityInput.value = 1;
+
+      }
+
+      if (quantity > 5000) {
+
+        quantity = 5000;
+
+        quantityInput.value = 5000;
+
+      }
+
+      totalElement.textContent =
+        quantity * PRICE;
+
     }
 
-    document.getElementById("total").textContent =
-      (quantity * TICKET_PRICE).toLocaleString("fr-FR");
-  }
 
-  quantityInput.addEventListener("input", updateTotal);
-
-  async function readResponse(response) {
-    const text = await response.text();
-
-    try {
-      return text ? JSON.parse(text) : {};
-    } catch {
-      return {
-        message: text || "Repons sèvè a pa valab."
-      };
-    }
-  }
-
-  function saveCurrentOrder() {
-    if (!currentOrder) return;
-
-    sessionStorage.setItem(
-      "rafle_pending_order",
-      JSON.stringify({
-        order_id: currentOrder.order_id,
-        payment_token: currentOrder.payment_token,
-        quantity: currentOrder.quantity,
-        amount: currentOrder.amount,
-        payment_method: currentOrder.payment_method,
-        attemptsRemaining: attemptsRemaining
-      })
+    quantityInput.addEventListener(
+      "input",
+     updateTotal
     );
-  }
 
-  function clearCurrentOrder() {
-    sessionStorage.removeItem("rafle_pending_order");
-    currentOrder = null;
-    attemptsRemaining = 2;
-  }
 
-  function showPaymentSection() {
-    if (!currentOrder) return;
+    quantityInput.addEventListener(
+      "change",
+      updateTotal
+    );
 
-    const method = currentOrder.payment_method;
 
-    if (!PAYMENT_NUMBERS[method]) {
-      showMessage(
-        orderMessage,
-        "Metòd peman sa a pa rekonèt.",
-        "error"
-      );
-      return;
-    }
+    updateTotal();
 
-    orderCard.classList.add("hidden");
-    paymentCard.classList.remove("hidden");
 
-    document.getElementById("paymentTitle").textContent =
-      method === "moncash"
-        ? "Peye avèk MonCash sou nimewo sa a:"
-        : "Peye avèk NatCash sou nimewo sa a:";
+    payButton.addEventListener(
+      "click",
+      async function () {
 
-    document.getElementById("paymentNumber").textContent =
-      PAYMENT_NUMBERS[method];
+        const name =
+          document
+            .getElementById("name")
+            .value
+            .trim();
 
-    document.getElementById("orderDetails").textContent =
-      "Kòmand: " + currentOrder.order_id +
-      " | Kantite tikè: " + currentOrder.quantity +
-      " | Total: " + currentOrder.amount + " Goud";
 
-    updateProofFormState();
-  }
+        const phone =
+          document
+            .getElementById("phone")
+            .value
+            .trim();
 
-  function updateProofFormState() {
-    const noAttempts = attemptsRemaining <= 0;
 
-    proofButton.disabled = noAttempts || submittingProof;
+        const quantity =
+          parseInt(
+            quantityInput.value,
+            10
+          );
 
-    if (noAttempts) {
-      showMessage(
-        proofMessage,
-        "Ou rive nan limit 2 tantativ yo. Kontakte administratè a pou èd.",
-        "error"
-      );
 
-      Array.from(proofForm.elements).forEach((element) => {
-        if (element.tagName !== "BUTTON") {
-          element.disabled = true;
+        const payment =
+          paymentInput.value;
+
+
+        if (
+          !name ||
+          !phone ||
+          !quantity ||
+          !payment
+        ) {
+
+          alert(
+            "Tanpri ranpli tout enfòmasyon yo."
+          );
+
+          return;
+
         }
-      });
-    } else {
-      Array.from(proofForm.elements).forEach((element) => {
-        element.disabled = false;
-      });
 
-      proofButton.disabled = submittingProof;
-    }
-  }
 
-  orderForm.addEventListener("submit", async function(event) {
-    event.preventDefault();
+        if (
+          quantity < 1 ||
+          quantity > 5000
+        ) {
 
-    if (submittingOrder) return;
+          alert(
+            "Kantite tikè a dwe ant 1 ak 5000."
+          );
 
-    hideMessage(orderMessage);
+          return;
 
-    const fullName =
-      document.getElementById("fullName").value.trim();
-
-    const phone =
-      document.getElementById("phone").value.trim();
-
-    const quantity =
-      Number(quantityInput.value);
-
-    const payment =
-      paymentInput.value;
-
-    if (!fullName || !phone) {
-      showMessage(
-        orderMessage,
-        "Tanpri antre non ou ak nimewo telefòn ou.",
-        "error"
-      );
-      return;
-    }
-
-    if (
-      !Number.isInteger(quantity) ||
-      quantity < 1 ||
-      quantity > MAX_TICKETS
-    ) {
-      showMessage(
-        orderMessage,
-        "Kantite tikè a dwe ant 1 ak 5000.",
-        "error"
-      );
-      return;
-    }
-
-    if (!PAYMENT_NUMBERS[payment]) {
-      showMessage(
-        orderMessage,
-        "Tanpri chwazi MonCash oswa NatCash.",
-        "error"
-      );
-      return;
-    }
-
-    submittingOrder = true;
-    orderButton.disabled = true;
-    orderButton.textContent = "Tanpri tann...";
-
-    try {
-      const response = await fetch(
-        SUPABASE_URL + "/functions/v1/create-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_KEY,
-            "Authorization": "Bearer " + SUPABASE_KEY
-          },
-          body: JSON.stringify({
-            full_name: fullName,
-            phone: phone,
-            quantity: quantity,
-            amount: quantity * TICKET_PRICE,
-            payment_method: payment
-          })
         }
-      );
 
-      const data = await readResponse(response);
 
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-          data.message ||
-          "Nou pa t kapab kreye kòmand lan."
-        );
+        const amount =
+          quantity * PRICE;
+
+
+        payButton.disabled = true;
+
+        payButton.textContent =
+          "Y ap prepare peman an...";
+
+
+        const SUPABASE_URL =
+          "https://ixttkvbxczdahaugsosw.supabase.co";
+
+
+        const SUPABASE_KEY =
+          "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
+
+
+        try {
+
+          const orderResponse =
+            await fetch(
+              `${SUPABASE_URL}/functions/v1/create-order`,
+              {
+                method: "POST",
+
+                headers: {
+
+                  "Content-Type":
+                    "application/json",
+
+                  "apikey":
+                    SUPABASE_KEY,
+
+                  "Authorization":
+                    `Bearer ${SUPABASE_KEY}`
+
+                },
+
+                body: JSON.stringify({
+
+                  full_name:
+                    name,
+
+                  phone:
+                    phone,
+
+                  quantity:
+                    quantity,
+
+                  amount:
+                    amount,
+
+                  payment_method:
+                    payment
+
+                })
+
+              }
+            );
+
+
+          const orderData =
+            await orderResponse.json();
+
+
+          if (
+            !orderResponse.ok ||
+            !orderData.order_id
+          ) {
+
+            throw new Error(
+              orderData.error ||
+              "Order creation failed"
+            );
+
+          }
+
+
+          const paymentResponse =
+            await fetch(
+              `${SUPABASE_URL}/functions/v1/create-moncash-payment`,
+              {
+                method: "POST",
+
+                headers: {
+
+                  "Content-Type":
+                    "application/json",
+
+                  "apikey":
+                    SUPABASE_KEY,
+
+                  "Authorization":
+                    `Bearer ${SUPABASE_KEY}`
+
+                },
+
+                body: JSON.stringify({
+
+                  order_id:
+                    orderData.order_id
+
+                })
+
+              }
+            );
+
+
+          const paymentData =
+            await paymentResponse.json();
+
+
+          if (
+            !paymentResponse.ok ||
+            !paymentData.checkout_url
+          ) {
+
+            throw new Error(
+              paymentData.error ||
+              "Payment creation failed"
+            );
+
+          }
+
+
+          window.location.href =
+            paymentData.checkout_url;
+
+
+        } catch (error) {
+
+          console.error(
+            "PAYMENT FLOW ERROR:",
+            error
+          );
+
+
+          alert(
+            "Gen yon pwoblèm pandan preparasyon peman an. Tanpri eseye ankò."
+          );
+
+
+          payButton.disabled =
+            false;
+
+
+          payButton.textContent =
+            "PEYE KOUNYE A";
+
+        }
+
       }
+    );
 
-      if (!data.order_id || !data.payment_token) {
-  console.log("Repons create-order:", data);
-
-  throw new Error(
-    "Enfòmasyon ki manke: " +
-    (!data.order_id ? "order_id " : "") +
-    (!data.payment_token ? "payment_token" : "") +
-    ". Tanpri verifye fonksyon create-order la."
-  );
-}
-
-      currentOrder = {
-        order_id: data.order_id,
-        payment_token: data.payment_token,
-        quantity: data.quantity || quantity,
-        amount: data.amount || quantity * TICKET_PRICE,
-        payment_method: data.payment_method || payment
-      };
-
-      attemptsRemaining = 2;
-      saveCurrentOrder();
-      showPaymentSection();
-
-      showMessage(
-        proofMessage,
-        "Kòmand lan kreye. Fè peman an, epi voye resi a anba a.",
-        "success"
-      );
-
-      window.scrollTo({
-        top: paymentCard.offsetTop - 15,
-        behavior: "smooth"
-      });
-
-    } catch (error) {
-      showMessage(
-        orderMessage,
-        error.message || "Yon erè rive. Eseye ankò.",
-        "error"
-      );
-    } finally {
-      submittingOrder = false;
-      orderButton.disabled = false;
-      orderButton.textContent = "Kontinye ak peman";
-    }
-  });
-
-  proofForm.addEventListener("submit", async function(event) {
-    event.preventDefault();
-
-    if (submittingProof || !currentOrder) return;
-
-    hideMessage(proofMessage);
-
-    if (attemptsRemaining <= 0) {
-      updateProofFormState();
-      return;
-    }
-
-    const transactionPhone =
-      document.getElementById("transactionPhone").value.trim();
-
-    const transactionReference =
-      document.getElementById("transactionReference").value.trim();
-
-    const receiptInput =
-      document.getElementById("receipt");
-
-    const receipt = receiptInput.files[0];
-
-    if (!transactionPhone || !transactionReference || !receipt) {
-      showMessage(
-        proofMessage,
-        "Tanpri ranpli tout chan yo epi chwazi foto resi a.",
-        "error"
-      );
-      return;
-    }
-
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp"
-    ];
-
-    if (!allowedTypes.includes(receipt.type)) {
-      showMessage(
-        proofMessage,
-        "Foto a dwe JPG, PNG oswa WEBP.",
-        "error"
-      );
-      return;
-    }
-
-    if (receipt.size <= 0 || receipt.size > MAX_RECEIPT_SIZE) {
-      showMessage(
-        proofMessage,
-        "Foto a dwe pi piti pase 5 MB.",
-        "error"
-      );
-      return;
-    }
-
-    submittingProof = true;
-    proofButton.disabled = true;
-    proofButton.textContent = "Ap voye prèv la...";
-
-    const formData = new FormData();
-
-    formData.append("order_id", currentOrder.order_id);
-    formData.append("payment_token", currentOrder.payment_token);
-    formData.append("transaction_phone", transactionPhone);
-    formData.append("transaction_reference", transactionReference);
-    formData.append("receipt", receipt);
-
-    try {
-      const response = await fetch(
-        SUPABASE_URL + "/functions/v1/submit-payment-proof",
-        {
-          method: "POST",
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": "Bearer " + SUPABASE_KEY
-          },
-          body: formData
-        }
-      );
-
-      const data = await readResponse(response);
-
-      if (!response.ok) {
-        if (response.status === 429) {
-          attemptsRemaining = 0;
-          saveCurrentOrder();
-          updateProofFormState();
-        }
-
-        throw new Error(
-          data.error ||
-          data.message ||
-          "Nou pa t kapab voye prèv peman an."
-        );
-      }
-
-      attemptsRemaining =
-        Number.isInteger(data.attempts_remaining)
-          ? data.attempts_remaining
-          : Math.max(0, attemptsRemaining - 1);
-
-      saveCurrentOrder();
-
-      proofForm.reset();
-
-      showMessage(
-        proofMessage,
-        "Nou resevwa prèv peman ou! Li annatant verifikasyon administratè a. " +
-        "Tantativ ki rete: " + attemptsRemaining +
-        ". Pa voye yon lòt prèv si ou pa bezwen korije li.",
-        "success"
-      );
-
-      updateProofFormState();
-
-    } catch (error) {
-      showMessage(
-        proofMessage,
-        error.message || "Erè pandan voye prèv la. Tanpri eseye ankò.",
-        "error"
-      );
-    } finally {
-      submittingProof = false;
-      proofButton.textContent = "Voye prèv peman an";
-      updateProofFormState();
-    }
-  });
-
-  document.getElementById("newOrderButton")
-    .addEventListener("click", function() {
-      clearCurrentOrder();
-
-      paymentCard.classList.add("hidden");
-      orderCard.classList.remove("hidden");
-
-      orderForm.reset();
-      quantityInput.value = 1;
-      updateTotal();
-
-      hideMessage(orderMessage);
-      hideMessage(proofMessage);
-
-      proofForm.reset();
-
-      Array.from(proofForm.elements).forEach((element) => {
-        element.disabled = false;
-      });
-
-      orderButton.disabled = false;
-
-      window.scrollTo({
-        top: orderCard.offsetTop - 15,
-        behavior: "smooth"
-      });
-    });
-
-  // Retabli kòmand lan si kliyan an rafrechi paj la nan menm sesyon an.
-  try {
-    const saved = sessionStorage.getItem("rafle_pending_order");
-
-    if (saved) {
-      const parsed = JSON.parse(saved);
-
-      if (
-        parsed.order_id &&
-        parsed.payment_token &&
-        PAYMENT_NUMBERS[parsed.payment_method]
-      ) {
-        currentOrder = parsed;
-        attemptsRemaining = Number.isInteger(parsed.attemptsRemaining)
-          ? parsed.attemptsRemaining
-          : 2;
-
-        showPaymentSection();
-
-        showMessage(
-          proofMessage,
-          "Nou retabli kòmand ou a. Si ou deja voye prèv la, tann verifikasyon administratè a.",
-          "info"
-        );
-      }
-    }
-  } catch (error) {
-    console.error("Pa t kapab retabli kòmand lan:", error);
-  }
-
-  updateTotal();
-</script>
-
-</body>
-</html>
+  </script></body></html>
