@@ -362,6 +362,20 @@
     "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
 
   const TICKET_PRICE = 100;
+  // Idantifyan inik navigatè a
+  const DEVICE_TOKEN_KEY = "rafle_device_token";
+  let deviceToken = null;
+
+  try {
+    deviceToken = localStorage.getItem(DEVICE_TOKEN_KEY);
+
+    if (!deviceToken) {
+      deviceToken = crypto.randomUUID();
+      localStorage.setItem(DEVICE_TOKEN_KEY, deviceToken);
+    }
+  } catch (error) {
+    deviceToken = crypto.randomUUID();
+  }
   const MAX_TICKETS = 5000;
   const MAX_RECEIPT_SIZE = 5 * 1024 * 1024;
 
