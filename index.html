@@ -787,27 +787,38 @@
 
       proofForm.reset();
 
-      proofJustSent = true;
+      const sentOrderId = currentOrder.order_id;
 
-      if (attemptsRemaining > 0) {
-        showMessage(
-          proofMessage,
-          "Nou resevwa prèv peman ou! Li annatant verifikasyon administratè a. " +
-          "Tantativ ki rete: " + attemptsRemaining +
-          ". Pa voye yon lòt prèv si ou pa bezwen korije li.",
-          "success"
-        );
-      } else {
-        showMessage(
-          proofMessage,
-          "Nou resevwa dezyèm prèv peman ou a! Li annatant verifikasyon administratè a. " +
-          "Ou pa gen tantativ ankò. Si w gen kesyon, kontakte nou:",
-          "success"
-        );
-        addWhatsappLink(proofMessage);
-      }
+      // Prèv la voye: nou retounen sou premye paj la
+      clearCurrentOrder();
 
-      updateProofFormState();
+      paymentCard.classList.add("hidden");
+      orderCard.classList.remove("hidden");
+
+      orderForm.reset();
+      quantityInput.value = 1;
+      updateTotal();
+
+      hideMessage(proofMessage);
+
+      Array.from(proofForm.elements).forEach((element) => {
+        element.disabled = false;
+      });
+
+      showMessage(
+        orderMessage,
+        "Nou resevwa prèv peman ou pou kòmand " +
+        sentOrderId.slice(0, 8).toUpperCase() +
+        "! Li annatant verifikasyon administratè a. " +
+        "Ou ka fè yon lòt kòmand si w vle. Pou kesyon:",
+        "success"
+      );
+      addWhatsappLink(orderMessage);
+
+      window.scrollTo({
+        top: orderCard.offsetTop - 15,
+        behavior: "smooth"
+      });
 
     } catch (error) {
       showMessage(
