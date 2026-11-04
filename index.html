@@ -405,6 +405,25 @@
   let attemptsRemaining = 2;
   let submittingOrder = false;
   let submittingProof = false;
+  let proofJustSent = false;
+
+  const WHATSAPP_DISPLAY = "3196-3122";
+  const WHATSAPP_LINK = "https://wa.me/50931963122";
+
+  function addWhatsappLink(element) {
+    element.appendChild(document.createTextNode(" WhatsApp: "));
+
+    const link = document.createElement("a");
+    link.href = WHATSAPP_LINK;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = WHATSAPP_DISPLAY;
+    link.style.color = "inherit";
+    link.style.fontWeight = "bold";
+    link.style.textDecoration = "underline";
+
+    element.appendChild(link);
+  }
 
   function showMessage(element, text, type) {
     element.textContent = text;
@@ -462,6 +481,7 @@
     sessionStorage.removeItem("rafle_pending_order");
     currentOrder = null;
     attemptsRemaining = 2;
+    proofJustSent = false;
   }
 
   function showPaymentSection() {
@@ -504,11 +524,14 @@
     proofButton.disabled = noAttempts || submittingProof;
 
     if (noAttempts) {
-      showMessage(
-        proofMessage,
-        "Ou rive nan limit 2 tantativ yo. Kontakte administratè a pou èd.",
-        "error"
-      );
+      if (!proofJustSent) {
+        showMessage(
+          proofMessage,
+          "Ou rive nan limit 2 tantativ yo. Kontakte administratè a pou èd.",
+          "error"
+        );
+        addWhatsappLink(proofMessage);
+      }
 
       Array.from(proofForm.elements).forEach((element) => {
         if (element.tagName !== "BUTTON") {
@@ -764,13 +787,25 @@
 
       proofForm.reset();
 
-      showMessage(
-        proofMessage,
-        "Nou resevwa prèv peman ou! Li annatant verifikasyon administratè a. " +
-        "Tantativ ki rete: " + attemptsRemaining +
-        ". Pa voye yon lòt prèv si ou pa bezwen korije li.",
-        "success"
-      );
+      proofJustSent = true;
+
+      if (attemptsRemaining > 0) {
+        showMessage(
+          proofMessage,
+          "Nou resevwa prèv peman ou! Li annatant verifikasyon administratè a. " +
+          "Tantativ ki rete: " + attemptsRemaining +
+          ". Pa voye yon lòt prèv si ou pa bezwen korije li.",
+          "success"
+        );
+      } else {
+        showMessage(
+          proofMessage,
+          "Nou resevwa dezyèm prèv peman ou a! Li annatant verifikasyon administratè a. " +
+          "Ou pa gen tantativ ankò. Si w gen kesyon, kontakte nou:",
+          "success"
+        );
+        addWhatsappLink(proofMessage);
+      }
 
       updateProofFormState();
 
