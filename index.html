@@ -846,10 +846,42 @@
   }
 
   // Pwoteksyon bouton Retounen
-  function activateBackGuard() {
+  let backGuardWaiting = false;
+
+  function pushBackGuard() {
+    if (!currentOrder) return;
+
     if (!history.state || !history.state.rafleGuard) {
       history.pushState({ rafleGuard: true }, "");
     }
+  }
+
+  function activateBackGuard() {
+    if (history.state && history.state.rafleGuard) return;
+
+    const active =
+      navigator.userActivation &&
+      navigator.userActivation.isActive;
+
+    if (active) {
+      pushBackGuard();
+      return;
+    }
+
+    // Chrome inyore antre istwa ki ajoute san touch itilizatè.
+    // Nou tann premye touch la anvan nou aktive pwoteksyon an.
+    if (backGuardWaiting) return;
+    backGuardWaiting = true;
+
+    const onFirstTouch = function() {
+      document.removeEventListener("pointerup", onFirstTouch, true);
+      document.removeEventListener("keydown", onFirstTouch, true);
+      backGuardWaiting = false;
+      pushBackGuard();
+    };
+
+    document.addEventListener("pointerup", onFirstTouch, true);
+    document.addEventListener("keydown", onFirstTouch, true);
   }
 
   async function cancelCurrentOrder() {
