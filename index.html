@@ -362,6 +362,7 @@
     "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
 
   const TICKET_PRICE = 100;
+
   // Idantifyan inik navigatè a
   const DEVICE_TOKEN_KEY = "rafle_device_token";
   let deviceToken = null;
@@ -376,6 +377,7 @@
   } catch (error) {
     deviceToken = crypto.randomUUID();
   }
+
   const MAX_TICKETS = 5000;
   const MAX_RECEIPT_SIZE = 5 * 1024 * 1024;
 
@@ -590,7 +592,8 @@
             phone: phone,
             quantity: quantity,
             amount: quantity * TICKET_PRICE,
-            payment_method: payment
+            payment_method: payment,
+            device_token: deviceToken
           })
         }
       );
@@ -606,15 +609,15 @@
       }
 
       if (!data.order_id || !data.payment_token) {
-  console.log("Repons create-order:", data);
+        console.log("Repons create-order:", data);
 
-  throw new Error(
-    "Enfòmasyon ki manke: " +
-    (!data.order_id ? "order_id " : "") +
-    (!data.payment_token ? "payment_token" : "") +
-    ". Tanpri verifye fonksyon create-order la."
-  );
-}
+        throw new Error(
+          "Enfòmasyon ki manke: " +
+          (!data.order_id ? "order_id " : "") +
+          (!data.payment_token ? "payment_token" : "") +
+          ". Tanpri verifye fonksyon create-order la."
+        );
+      }
 
       currentOrder = {
         order_id: data.order_id,
