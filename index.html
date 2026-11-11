@@ -1126,7 +1126,33 @@
       };
     }
 
+    if (order.last_proof_status === "rejected") {
+      return {
+        text: "Prèv rejte ↩️ Ou ka voye yon lòt",
+        color: "#c2410c"
+      };
+    }
+
     return { text: "Peman poko voye", color: "#c2410c" };
+  }
+
+  function resumeOrder(order) {
+    currentOrder = {
+      order_id: order.id,
+      payment_token: order.payment_token,
+      quantity: order.quantity,
+      amount: order.amount,
+      payment_method: order.payment_method
+    };
+
+    attemptsRemaining = Math.max(0, 2 - (order.attempts_used || 0));
+
+    saveCurrentOrder();
+    closeOrdersPanel();
+    showPaymentSection();
+    hideMessage(proofMessage);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function fetchMyOrders() {
@@ -1208,6 +1234,9 @@
       item.appendChild(date);
       item.appendChild(state);
 
+      const resumable =
+        !!order.payment_token && (order.attempts_used || 0) < 2;
+
       if (
         order.payment_status === "pending" &&
         !order.proof_submitted &&
@@ -1216,9 +1245,16 @@
         const rejected = document.createElement("div");
         rejected.className = "message error";
         rejected.textContent =
-          "Prèv ou a te rejte. Nòt administratè a: " +
-          order.admin_note +
-          ". Ranpli fòm nan epi peze Kontinye ak peman pou re-voye prèv la.";
+          "Prèv ou a te rejte. Nòt administratè a: " + order.admin_note;
+
+        if (resumable) {
+          rejected.textContent += ". Peze la a pou voye yon lòt foto.";
+          rejected.style.cursor = "pointer";
+          rejected.addEventListener("click", function() {
+            resumeOrder(order);
+          });
+        }
+
         item.appendChild(rejected);
       }
 
@@ -1237,6 +1273,16 @@
           shareTickets(order);
         });
         item.appendChild(share);
+      }
+
+      if (resumable) {
+        const resume = document.createElement("button");
+        resume.type = "button";
+        resume.textContent = "Voye prèv la (menm kòmand lan)";
+        resume.addEventListener("click", function() {
+          resumeOrder(order);
+        });
+        item.appendChild(resume);
       }
 
       ordersList.appendChild(item);
