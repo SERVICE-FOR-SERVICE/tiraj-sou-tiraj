@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Administratè - Rafle Tout Sa Nou Jwenn</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    header {
+      background: #075985;
+      color: white;
+      text-align: center;
+      padding: 20px 15px;
+    }
+
+    header h1 { margin: 0; font-size: 24px; }
+
+    .container {
+      max-width: 760px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .card {
+      background: white;
+      padding: 18px;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      overflow-wrap: anywhere;
+    }
+
+    h2 { color: #075985; margin-top: 0; }
+
+    label { display: block; font-weight: bold; margin: 12px 0 6px; }
+
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+      font-family: inherit;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      background: #0284c7;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+
+    .approve { background: #047857; }
+    .reject { background: #d97706; }
+    .final { background: #b91c1c; }
+    .secondary { background: #475569; }
+
+    .message {
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .success { background: #dcfce7; color: #166534; }
+    .error { background: #fee2e2; color: #991b1b; }
+    .info { background: #e0f2fe; color: #075985; }
+
+    .hidden { display: none !important; }
+
+    .small { color: #64748b; font-size: 14px; }
+
+    .status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+      background: #e2e8f0;
+    }
+
+    .proof {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    .proof img {
+      max-width: 100%;
+      max-height: 360px;
+      border-radius: 8px;
+      margin-top: 8px;
+      border: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔐 Administratè</h1>
+</header>
+
+<main class="container">
+
+  <section class="card" id="loginCard">
+    <h2>Konekte</h2>
+
+    <form id="loginForm">
+      <label for="adminPassword">Modpas administratè</label>
+      <input
+        type="password"
+        id="adminPassword"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="loginButton">Antre</button>
+
+      <div id="loginMessage" class="message hidden"></div>
+    </form>
+  </section>
+
+  <section id="panel" class="hidden">
+
+    <div class="card">
+      <label for="filter">Filtre</label>
+      <select id="filter">
+        <option value="review">Annatant verifikasyon</option>
+        <option value="confirmed">Konfime</option>
+        <option value="failed">Echwe / rejte</option>
+        <option value="all">Tout</option>
+      </select>
+
+      <button type="button" id="refreshButton">Rafrechi</button>
+      <button type="button" id="logoutButton" class="secondary">
+        Dekonekte
+      </button>
+
+      <div id="panelMessage" class="message hidden"></div>
+    </div>
+
+    <div id="orders"></div>
+
+  </section>
+
+</main>
+
+<script>
+  const SUPABASE_URL =
+    "https://ixttkvbxczdahaugsosw.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_m83u8nBwGjol2Zj0QNixww_QS12I6pg";
+
+  const PASSWORD_KEY = "rafle_admin_password";
+
+  let adminPassword = sessionStorage.getItem(PASSWORD_KEY) || "";
+  let busy = false;
+
+  const loginCard = document.getElementById("loginCard");
+  const panel = document.getElementById("panel");
+  const loginForm = document.getElementById("loginForm");
+  const loginMessage = document.getElementById("loginMessage");
+  const panelMessage = document.getElementById("panelMessage");
+  const ordersBox = document.getElementById("orders");
+  const filterSelect = document.getElementById("filter");
+
+  function show(element, text, type) {
+    element.textContent = text;
+    element.className = "message " + type;
+  }
+
+  function hide(element) {
+    element.textContent = "";
+    element.className = "message hidden";
+  }
+
+  function el(tag, text, className) {
+    const node = document.createElement(tag);
+    if (text !== undefined && text !== null) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+
+  function formatDate(value) {
+    return value ? new Date(value).toLocaleString("fr-FR") : "";
+  }
+
+  async function api(payload) {
+    const response = await fetch(
+      SUPABASE_URL + "/functions/v1/admin-api",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "x-admin-password": adminPassword
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    const text = await response.text();
+    let data = {};
+
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = { message: text };
+    }
+
+    if (!response.ok) {
+      const error = new Error(data.message || data.error || "ERREUR");
+      error.code = data.error;
+      throw error;
+    }
+
+    return data;
+  }
+
+  function orderStatusText(order) {
+    if (order.payment_status === "confirmed") return "Konfime ✅";
+    if (order.payment_status === "failed") return "Echwe ❌";
+    if (order.payment_status === "cancelled") return "Anile";
+    if (order.proof_submitted) return "Annatant verifikasyon ⏳";
+    return "Peman poko voye";
+  }
+
+  async function review(proofId, decision, final, note) {
+    if (busy) return;
+
+    const question =
+      decision === "approved"
+        ? "Apwouve peman sa a? Tikè yo ap kreye."
+        : final
+        ? "Rejte DEFINITIVMAN? Kòmand lan ap vin echwe."
+        : "Rejte prèv sa a? Kliyan an ap kapab voye yon lòt prèv.";
+
+    if (!confirm(question)) return;
+
+    busy = true;
+    hide(panelMessage);
+
+    try {
+      const data = await api({
+        action: "review",
+        proof_id: proofId,
+        decision: decision,
+        final: final,
+        note: note
+      });
+
+      let text = "Fèt.";
+
+      if (decision === "approved") {
+        const tickets = (data.result && data.result.tickets) || [];
+        text = "Peman apwouve. Tikè kreye: " + tickets.join(", ");
+      } else if (data.forced_final) {
+        text =
+          "Prèv rejte. Kliyan an gen yon lòt kòmand ouvè, kidonk " +
+          "kòmand sa a make kòm echwe.";
+      } else if (final || data.final) {
+        text = "Prèv rejte. Kòmand lan make kòm echwe.";
+      } else {
+        text = "Prèv rejte. Kliyan an ka voye yon lòt prèv.";
+      }
+
+      show(panelMessage, text, "success");
+      busy = false;
+      await loadOrders();
+    } catch (error) {
+      busy = false;
+      show(panelMessage, "Erè: " + error.message, "error");
+    }
+  }
+
+  function renderProof(proof) {
+    const box = el("div", null, "proof");
+
+    box.appendChild(
+      el("strong", "Prèv #" + proof.attempt_number + " (" + proof.status + ")")
+    );
+    box.appendChild(el("div", "Referans: " + proof.transaction_reference));
+    box.appendChild(el("div", "Telefòn tranzaksyon: " + proof.transaction_phone));
+    box.appendChild(el("div", "Voye: " + formatDate(proof.created_at), "small"));
+
+    if (proof.admin_note) {
+      box.appendChild(el("div", "Nòt: " + proof.admin_note));
+    }
+
+    if (proof.receipt_url) {
+      const link = document.createElement("a");
+      link.href = proof.receipt_url;
+      link.target = "_blank";
+      link.rel = "noopener";
+
+      const image = document.createElement("img");
+      image.src = proof.receipt_url;
+      image.alt = "Resi peman";
+
+      link.appendChild(image);
+      box.appendChild(link);
+    } else {
+      box.appendChild(el("div", "Foto pa disponib.", "small"));
+    }
+
+    if (proof.status === "submitted") {
+      const note = document.createElement("textarea");
+      note.rows = 2;
+      note.maxLength = 500;
+      note.placeholder = "Nòt pou kliyan an (opsyonèl)";
+      note.style.marginTop = "10px";
+      box.appendChild(note);
+
+      const approve = el("button", "✅ Apwouve", "approve");
+      approve.type = "button";
+      approve.addEventListener("click", () =>
+        review(proof.id, "approved", false, note.value)
+      );
+
+      const reject = el("button", "↩️ Rejte (kliyan an ka re-voye)", "reject");
+      reject.type = "button";
+      reject.addEventListener("click", () =>
+        review(proof.id, "rejected", false, note.value)
+      );
+
+      const final = el("button", "⛔ Rejte definitivman", "final");
+      final.type = "button";
+      final.addEventListener("click", () =>
+        review(proof.id, "rejected", true, note.value)
+      );
+
+      box.appendChild(approve);
+      box.appendChild(reject);
+      box.appendChild(final);
+    }
+
+    return box;
+  }
+
+  function renderOrders(orders) {
+    ordersBox.textContent = "";
+
+    if (orders.length === 0) {
+      const card = el("div", null, "card");
+      card.appendChild(el("p", "Pa gen kòmand pou filtre sa a."));
+      ordersBox.appendChild(card);
+      return;
+    }
+
+    orders.forEach((order) => {
+      const card = el("div", null, "card");
+
+      card.appendChild(
+        el("h2", "Kòmand " + order.id.slice(0, 8).toUpperCase())
+      );
+      card.appendChild(el("span", orderStatusText(order), "status"));
+
+      const person = order.participant || {};
+
+      card.appendChild(el("p", "Non: " + (person.full_name || "?")));
+      card.appendChild(el("div", "Telefòn: " + (person.phone || "?")));
+
+      if (person.whatsapp) {
+        card.appendChild(el("div", "WhatsApp: " + person.whatsapp));
+      }
+
+      card.appendChild(
+        el(
+          "p",
+          order.quantity + " tikè | " + order.amount + " Goud | " +
+          (order.payment_method === "moncash" ? "MonCash" : "NatCash")
+        )
+      );
+
+      card.appendChild(
+        el("div", "Kreye: " + formatDate(order.created_at), "small")
+      );
+
+      if (order.confirmed_at) {
+        card.appendChild(
+          el("div", "Konfime: " + formatDate(order.confirmed_at), "small")
+        );
+      }
+
+      if (order.tickets && order.tickets.length > 0) {
+        card.appendChild(
+          el("p", "🎟️ Tikè: " + order.tickets.join(", "))
+        );
+      }
+
+      (order.proofs || []).forEach((proof) => {
+        card.appendChild(renderProof(proof));
+      });
+
+      ordersBox.appendChild(card);
+    });
+  }
+
+  async function loadOrders() {
+    ordersBox.textContent = "Ap chaje...";
+
+    const data = await api({
+      action: "list",
+      status: filterSelect.value
+    });
+
+    renderOrders(data.orders || []);
+  }
+
+  function showPanel() {
+    loginCard.classList.add("hidden");
+    panel.classList.remove("hidden");
+  }
+
+  function logout() {
+    sessionStorage.removeItem(PASSWORD_KEY);
+    adminPassword = "";
+    panel.classList.add("hidden");
+    loginCard.classList.remove("hidden");
+    ordersBox.textContent = "";
+    document.getElementById("adminPassword").value = "";
+  }
+
+  loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    hide(loginMessage);
+
+    adminPassword = document.getElementById("adminPassword").value;
+
+    try {
+      await loadOrders();
+      sessionStorage.setItem(PASSWORD_KEY, adminPassword);
+      showPanel();
+    } catch (error) {
+      adminPassword = "";
+      show(
+        loginMessage,
+        error.code === "UNAUTHORIZED"
+          ? "Modpas la pa kòrèk."
+          : "Erè: " + error.message,
+        "error"
+      );
+    }
+  });
+
+  document.getElementById("refreshButton")
+    .addEventListener("click", async function() {
+      hide(panelMessage);
+
+      try {
+        await loadOrders();
+      } catch (error) {
+        show(panelMessage, "Erè: " + error.message, "error");
+      }
+    });
+
+  filterSelect.addEventListener("change", async function() {
+    try {
+      await loadOrders();
+    } catch (error) {
+      show(panelMessage, "Erè: " + error.message, "error");
+    }
+  });
+
+  document.getElementById("logoutButton")
+    .addEventListener("click", logout);
+
+  // Rekonekte otomatikman nan menm sesyon an
+  if (adminPassword) {
+    loadOrders()
+      .then(showPanel)
+      .catch(logout);
+  }
+</script>
+
+</body>
+</html>
