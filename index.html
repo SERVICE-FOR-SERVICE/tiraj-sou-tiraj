@@ -1084,6 +1084,32 @@
   const ordersPanel = document.getElementById("ordersPanel");
   const ordersList = document.getElementById("ordersList");
 
+  async function shareTickets(order) {
+    const text =
+      "🎟️ Rafle Tout Sa Nou Jwenn\n" +
+      "Kòmand " + order.id.slice(0, 8).toUpperCase() + "\n" +
+      "Tikè mwen yo: " + order.tickets.join(", ") + "\n" +
+      window.location.origin + window.location.pathname;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Tikè Rafle Tout Sa Nou Jwenn",
+          text: text
+        });
+        return;
+      }
+    } catch (error) {
+      if (error && error.name === "AbortError") return;
+    }
+
+    window.open(
+      "https://wa.me/?text=" + encodeURIComponent(text),
+      "_blank",
+      "noopener"
+    );
+  }
+
   function describeOrder(order) {
     if (order.payment_status === "confirmed") {
       return { text: "Konfime ✅", color: "#166534" };
@@ -1181,6 +1207,37 @@
       item.appendChild(details);
       item.appendChild(date);
       item.appendChild(state);
+
+      if (
+        order.payment_status === "pending" &&
+        !order.proof_submitted &&
+        order.admin_note
+      ) {
+        const rejected = document.createElement("div");
+        rejected.className = "message error";
+        rejected.textContent =
+          "Prèv ou a te rejte. Nòt administratè a: " +
+          order.admin_note +
+          ". Ranpli fòm nan epi peze Kontinye ak peman pou re-voye prèv la.";
+        item.appendChild(rejected);
+      }
+
+      if (order.tickets && order.tickets.length > 0) {
+        const tickets = document.createElement("div");
+        tickets.style.marginTop = "8px";
+        tickets.style.fontWeight = "bold";
+        tickets.textContent =
+          "🎟️ Tikè: " + order.tickets.join(", ");
+        item.appendChild(tickets);
+
+        const share = document.createElement("button");
+        share.type = "button";
+        share.textContent = "📤 Pataje tikè yo";
+        share.addEventListener("click", function() {
+          shareTickets(order);
+        });
+        item.appendChild(share);
+      }
 
       ordersList.appendChild(item);
     });
