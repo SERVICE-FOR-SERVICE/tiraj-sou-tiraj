@@ -710,6 +710,17 @@
       const data = await readResponse(response);
 
       if (!response.ok) {
+        if (data.error === "NOT_ENOUGH_TICKETS") {
+          const left = Number(data.remaining) || 0;
+
+          throw new Error(
+            left > 0
+              ? "Pa gen ase tikè. Sèlman " + left +
+                " tikè ki rete. Diminye kantite a epi eseye ankò."
+              : "Tout tikè yo vann. Mèsi pou enterè w!"
+          );
+        }
+
         throw new Error(
           data.error ||
           data.message ||
