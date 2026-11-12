@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Rafle Tout Sa Nou Jwenn</title>
+  <title>TIRAJ SOU TIRAJ</title>
 
   <style>
     * {
@@ -22,7 +22,16 @@
       background: #075985;
       color: white;
       text-align: center;
-      padding: 28px 15px;
+      padding: 20px 15px;
+    }
+
+    .header-logo {
+      width: 105px;
+      height: 105px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 8px;
+      border-radius: 12px;
     }
 
     header h1 {
@@ -32,6 +41,7 @@
 
     header p {
       margin: 5px 0;
+      font-size: 20px;
     }
 
     .container {
@@ -61,6 +71,7 @@
       background: #e0f2fe;
       border-radius: 10px;
       margin-bottom: 18px;
+      line-height: 1.5;
     }
 
     .price {
@@ -69,6 +80,33 @@
       color: #047857;
       text-align: center;
       margin: 15px 0;
+    }
+
+    /* Mesaj 10 gayan yo */
+    .winners-message {
+      text-align: center;
+      color: #dc2626;
+      font-size: 19px;
+      font-weight: bold;
+      padding: 12px 5px;
+      margin: 12px 0;
+      animation: floatWinners 1.8s ease-in-out infinite;
+    }
+
+    @keyframes floatWinners {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-7px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .winners-message {
+        animation: none;
+      }
     }
 
     label {
@@ -243,27 +281,35 @@
 <body>
 
 <header>
-  <h1>🎟️ Rafle Tout Sa Nou Jwenn</h1>
+  <img
+    src="logo-tiraj.png"
+    alt="Logo TIRAJ SOU TIRAJ"
+    class="header-logo"
+  >
+
+  <h1>TIRAJ SOU TIRAJ</h1>
   <p>Grenn Chans Ou</p>
-  <p>Yon chans pou w genyen gwo pri a!</p>
 </header>
 
 <main class="container">
 
   <section class="card">
+
     <div class="moto">
-      🏍️ Tiraj pou yon moto Dayun 125cc tounèf
+      Tiraj pou yon moto 150cc tou nèf.
+      Chwa: Dayun, Titan oswa Toro.
     </div>
 
     <p class="price">100 Goud pou chak tikè</p>
 
-    <p>
-      Ranpli enfòmasyon ou yo, chwazi metòd peman ou,
-      epi swiv enstriksyon yo pou voye prèv peman an.
-    </p>
+    <div class="winners-message">
+      🎉 10 GAYAN AP GEN CHANS RESEVWA YON PRIM! 🎉
+    </div>
+
   </section>
 
   <section class="card" id="orderCard">
+
     <h2>1. Enskri pou raf la</h2>
 
     <form id="orderForm">
@@ -303,6 +349,7 @@
       </p>
 
       <label for="payment">Chwazi metòd peman</label>
+
       <select id="payment" required>
         <option value="">Chwazi metòd peman</option>
         <option value="moncash">MonCash</option>
@@ -319,17 +366,22 @@
   </section>
 
   <section class="card hidden" id="paymentCard">
+
     <h2>2. Fè peman ou</h2>
 
     <div id="orderDetails" class="message info"></div>
 
     <div class="payment-box">
+
       <p id="paymentTitle"></p>
+
       <div class="payment-number" id="paymentNumber"></div>
+
       <p>
         Voye montan egzak la sou nimewo ki parèt anwo a.
         Kenbe resi tranzaksyon ou an.
       </p>
+
     </div>
 
     <div class="notice">
@@ -339,13 +391,16 @@
       anvan tikè yo ka atribye ba ou.
     </div>
 
-    <h2 style="margin-top:25px;">3. Voye prèv peman an</h2>
+    <h2 style="margin-top:25px;">
+      3. Voye prèv peman an
+    </h2>
 
     <form id="proofForm">
 
       <label for="transactionPhone">
         Nimewo telefòn ki te fè tranzaksyon an
       </label>
+
       <input
         type="tel"
         id="transactionPhone"
@@ -357,6 +412,7 @@
       <label for="transactionReference">
         Referans tranzaksyon
       </label>
+
       <input
         type="text"
         id="transactionReference"
@@ -368,6 +424,7 @@
       <label for="receipt">
         Foto resi peman an
       </label>
+
       <input
         type="file"
         id="receipt"
@@ -401,20 +458,21 @@
   </section>
 
   <section class="card">
+
     <h2>Enfòmasyon enpòtan</h2>
+
     <ul>
       <li>Chak tikè koute 100 Goud.</li>
-      <li>Verifye nimewo peman an anvan ou voye lajan.</li>
       <li>Kenbe resi tranzaksyon ou an.</li>
-      <li>Voye prèv peman an pou administratè a ka verifye li.</li>
-      <li>Pa gen tikè ki garanti anvan peman an fin apwouve.</li>
+      <li>Tikè yo disponib sèlman apre apwobasyon peman an.</li>
     </ul>
+
   </section>
 
 </main>
 
 <footer>
-  © Rafle Tout Sa Nou Jwenn
+  © TIRAJ SOU TIRAJ
 </footer>
 
 <button
@@ -427,15 +485,25 @@
 </button>
 
 <div id="ordersPanel" class="orders-overlay hidden">
+
   <div class="orders-sheet">
+
     <h2>✉️ Kòmand mwen yo</h2>
+
     <div id="ordersList"></div>
+
     <p class="small">
       Tikè yo ap parèt isit la lè peman an konfime.
     </p>
-    <button type="button" id="ordersClose" class="orders-close">
+
+    <button
+      type="button"
+      id="ordersClose"
+      class="orders-close"
+    >
       Fèmen
     </button>
+
   </div>
 </div>
 
@@ -886,7 +954,6 @@
 
       const sentOrderId = currentOrder.order_id;
 
-      // Prèv la voye: nou retounen sou premye paj la
       clearCurrentOrder();
 
       paymentCard.classList.add("hidden");
@@ -910,6 +977,7 @@
         "Ou ka fè yon lòt kòmand si w vle. Pou kesyon:",
         "success"
       );
+
       addWhatsappLink(orderMessage);
       refreshEnvelopeBadge();
 
@@ -933,6 +1001,7 @@
 
   document.getElementById("newOrderButton")
     .addEventListener("click", function() {
+
       clearCurrentOrder();
 
       paymentCard.classList.add("hidden");
@@ -972,6 +1041,7 @@
         PAYMENT_NUMBERS[parsed.payment_method]
       ) {
         currentOrder = parsed;
+
         attemptsRemaining = Number.isInteger(parsed.attemptsRemaining)
           ? parsed.attemptsRemaining
           : 2;
@@ -1012,8 +1082,6 @@
       return;
     }
 
-    // Chrome inyore antre istwa ki ajoute san touch itilizatè.
-    // Nou tann premye touch la anvan nou aktive pwoteksyon an.
     if (backGuardWaiting) return;
     backGuardWaiting = true;
 
@@ -1049,7 +1117,6 @@
 
     const data = await readResponse(response);
 
-    // Si kòmand lan pa pending ankò, nou kite kliyan an ale
     if (!response.ok && data.error !== "ORDER_NOT_FOUND") {
       const err = new Error(data.error || "CANCEL_FAILED");
       err.code = data.error;
@@ -1058,6 +1125,7 @@
   }
 
   window.addEventListener("popstate", async function() {
+
     if (!currentOrder) return;
 
     const leave = confirm(
@@ -1076,7 +1144,9 @@
 
       document.getElementById("newOrderButton").click();
       history.back();
+
     } catch (error) {
+
       history.pushState({ rafleGuard: true }, "");
 
       showMessage(
@@ -1089,28 +1159,33 @@
     }
   });
 
-  // Anvlòp kòmand aparèy la (kwen paj la)
+  // Anvlòp kòmand aparèy la
   const envelopeButton = document.getElementById("envelopeButton");
   const envelopeBadge = document.getElementById("envelopeBadge");
   const ordersPanel = document.getElementById("ordersPanel");
   const ordersList = document.getElementById("ordersList");
 
   async function shareTickets(order) {
+
     const text =
-      "🎟️ Rafle Tout Sa Nou Jwenn\n" +
+      "🎟️ TIRAJ SOU TIRAJ\n" +
       "Kòmand " + order.id.slice(0, 8).toUpperCase() + "\n" +
       "Tikè mwen yo: " + order.tickets.join(", ") + "\n" +
       window.location.origin + window.location.pathname;
 
     try {
+
       if (navigator.share) {
         await navigator.share({
-          title: "Tikè Rafle Tout Sa Nou Jwenn",
+          title: "Tikè TIRAJ SOU TIRAJ",
           text: text
         });
+
         return;
       }
+
     } catch (error) {
+
       if (error && error.name === "AbortError") return;
     }
 
@@ -1122,6 +1197,7 @@
   }
 
   function describeOrder(order) {
+
     if (order.payment_status === "confirmed") {
       return { text: "Konfime ✅", color: "#166534" };
     }
@@ -1148,6 +1224,7 @@
   }
 
   function resumeOrder(order) {
+
     currentOrder = {
       order_id: order.id,
       payment_token: order.payment_token,
@@ -1156,17 +1233,24 @@
       payment_method: order.payment_method
     };
 
-    attemptsRemaining = Math.max(0, 2 - (order.attempts_used || 0));
+    attemptsRemaining = Math.max(
+      0,
+      2 - (order.attempts_used || 0)
+    );
 
     saveCurrentOrder();
     closeOrdersPanel();
     showPaymentSection();
     hideMessage(proofMessage);
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
   async function fetchMyOrders() {
+
     const response = await fetch(
       SUPABASE_URL + "/functions/v1/create-order",
       {
@@ -1195,47 +1279,69 @@
   }
 
   async function refreshEnvelopeBadge() {
+
     try {
+
       const orders = await fetchMyOrders();
 
       envelopeBadge.textContent = orders.length;
-      envelopeBadge.classList.toggle("hidden", orders.length === 0);
+
+      envelopeBadge.classList.toggle(
+        "hidden",
+        orders.length === 0
+      );
+
     } catch (error) {
+
       console.error("Pa t kapab chaje kòmand yo:", error);
     }
   }
 
   function renderOrders(orders) {
+
     ordersList.textContent = "";
 
     if (orders.length === 0) {
+
       const empty = document.createElement("p");
-      empty.textContent = "Ou poko gen kòmand sou aparèy sa a.";
+
+      empty.textContent =
+        "Ou poko gen kòmand sou aparèy sa a.";
+
       ordersList.appendChild(empty);
+
       return;
     }
 
     orders.forEach((order) => {
+
       const status = describeOrder(order);
+
       const item = document.createElement("div");
+
       item.className = "order-item";
 
       const title = document.createElement("strong");
+
       title.textContent =
         "Kòmand " + order.id.slice(0, 8).toUpperCase();
 
       const details = document.createElement("div");
+
       details.textContent =
         order.quantity + " tikè | " +
         order.amount + " Goud | " +
         (order.payment_method === "moncash" ? "MonCash" : "NatCash");
 
       const date = document.createElement("div");
+
       date.className = "small";
+
       date.textContent =
         new Date(order.created_at).toLocaleString("fr-FR");
 
       const state = document.createElement("div");
+
       state.textContent = status.text;
       state.style.color = status.color;
       state.style.fontWeight = "bold";
@@ -1246,21 +1352,30 @@
       item.appendChild(state);
 
       const resumable =
-        !!order.payment_token && (order.attempts_used || 0) < 2;
+        !!order.payment_token &&
+        (order.attempts_used || 0) < 2;
 
       if (
         order.payment_status === "pending" &&
         !order.proof_submitted &&
         order.admin_note
       ) {
+
         const rejected = document.createElement("div");
+
         rejected.className = "message error";
+
         rejected.textContent =
-          "Prèv ou a te rejte. Nòt administratè a: " + order.admin_note;
+          "Prèv ou a te rejte. Nòt administratè a: " +
+          order.admin_note;
 
         if (resumable) {
-          rejected.textContent += ". Peze la a pou voye yon lòt foto.";
+
+          rejected.textContent +=
+            ". Peze la a pou voye yon lòt foto.";
+
           rejected.style.cursor = "pointer";
+
           rejected.addEventListener("click", function() {
             resumeOrder(order);
           });
@@ -1270,29 +1385,42 @@
       }
 
       if (order.tickets && order.tickets.length > 0) {
+
         const tickets = document.createElement("div");
+
         tickets.style.marginTop = "8px";
         tickets.style.fontWeight = "bold";
+
         tickets.textContent =
           "🎟️ Tikè: " + order.tickets.join(", ");
+
         item.appendChild(tickets);
 
         const share = document.createElement("button");
+
         share.type = "button";
         share.textContent = "📤 Pataje tikè yo";
+
         share.addEventListener("click", function() {
           shareTickets(order);
         });
+
         item.appendChild(share);
       }
 
       if (resumable) {
+
         const resume = document.createElement("button");
+
         resume.type = "button";
-        resume.textContent = "Voye prèv la (menm kòmand lan)";
+
+        resume.textContent =
+          "Voye prèv la (menm kòmand lan)";
+
         resume.addEventListener("click", function() {
           resumeOrder(order);
         });
+
         item.appendChild(resume);
       }
 
@@ -1301,16 +1429,26 @@
   }
 
   envelopeButton.addEventListener("click", async function() {
+
     ordersPanel.classList.remove("hidden");
+
     ordersList.textContent = "Ap chaje...";
 
     try {
+
       const orders = await fetchMyOrders();
+
       renderOrders(orders);
 
       envelopeBadge.textContent = orders.length;
-      envelopeBadge.classList.toggle("hidden", orders.length === 0);
+
+      envelopeBadge.classList.toggle(
+        "hidden",
+        orders.length === 0
+      );
+
     } catch (error) {
+
       ordersList.textContent =
         "Nou pa t kapab chaje kòmand yo. Eseye ankò.";
     }
@@ -1324,6 +1462,7 @@
     .addEventListener("click", closeOrdersPanel);
 
   ordersPanel.addEventListener("click", function(event) {
+
     if (event.target === ordersPanel) {
       closeOrdersPanel();
     }
@@ -1332,6 +1471,7 @@
   refreshEnvelopeBadge();
 
   updateTotal();
+
 </script>
 
 </body>
