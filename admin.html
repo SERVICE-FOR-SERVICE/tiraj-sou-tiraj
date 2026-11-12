@@ -115,6 +115,30 @@
       margin-top: 8px;
       border: 1px solid #e2e8f0;
     }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      color: #075985;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #64748b;
+    }
   </style>
 </head>
 
@@ -145,6 +169,15 @@
   </section>
 
   <section id="panel" class="hidden">
+
+    <div class="card">
+      <h2>📊 Rezime</h2>
+      <div id="stats" class="stats-grid">Ap chaje...</div>
+
+      <button type="button" id="exportButton">
+        ⬇️ Ekspòte tikè yo (CSV)
+      </button>
+    </div>
 
     <div class="card">
       <label for="filter">Filtre</label>
@@ -431,6 +464,139 @@
     });
 
     renderOrders(data.orders || []);
+    loadStats();
+  }
+
+  const statsBox = document.getElementById("stats");
+
+  function renderStats(s) {
+    statsBox.textContent = "";
+
+    const items = [
+      [s.tickets_sold + " / " + s.total_tickets, "Tikè vann"],
+      [s.tickets_remaining, "Tikè ki rete"],
+      [
+        Number(s.confirmed_amount).toLocaleString("fr-FR") + " G",
+        "Lajan konfime"
+      ],
+      [s.confirmed_orders, "Kòmand konfime"],
+      [
+        s.awaiting_review + " (" + s.pending_tickets + " tikè)",
+        "Annatant verifikasyon"
+      ],
+      [s.unpaid_orders, "Peman poko voye"]
+    ];
+
+    items.forEach(function(item) {
+      const box = el("div", null, "stat");
+      box.appendChild(el("strong", String(item[0])));
+      box.appendChild(el("span", item[1]));
+      statsBox.appendChild(box);
+    });
+  }
+
+  async function loadStats() {
+    try {
+      const data = await api({ action: "stats" });
+      renderStats(data.stats);
+    } catch (error) {
+      statsBox.textContent =
+        "Pa t kapab chaje rezime a: " + error.message;
+    }
+  }
+
+  // Pwoteje kont fòmil Excel (=, @, + ak - ki pa nimewo telefòn)
+  function csvCell(value) {
+    let text =
+      value === null || value === undefined ? "" : String(value);
+
+    if (
+      /^[=@\t\r]/.test(text) ||
+      (/^[+-]/.test(text) && !/^\+?\d[\d\s-]*$/.test(text))
+    ) {
+      text = "'" + text;
+    }
+
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
+
+  async function exportCsv() {
+    const button = document.getElementById("exportButton");
+
+    if (button.disabled) return;
+
+    button.disabled = true;
+    hide(panelMessage);
+
+    try {
+      const data = await api({ action: "export" });
+      const rows = data.tickets || [];
+
+      if (rows.length === 0) {
+        show(panelMessage, "Pa gen tikè pou ekspòte ankò.", "info");
+        return;
+      }
+
+      const header = [
+        "Nimewo tikè",
+        "Estati tikè",
+        "Kòmand",
+        "Non",
+        "Telefòn",
+        "WhatsApp",
+        "Metòd peman",
+        "Kantite tikè kòmand",
+        "Montan kòmand (Goud)",
+        "Referans tranzaksyon",
+        "Dat konfimasyon"
+      ];
+
+      const lines = [header.map(csvCell).join(",")];
+
+      rows.forEach(function(r) {
+        lines.push(
+          [
+            r.ticket_number,
+            r.ticket_status,
+            r.order_id ? r.order_id.slice(0, 8).toUpperCase() : "",
+            r.full_name,
+            r.phone,
+            r.whatsapp,
+            r.payment_method,
+            r.order_quantity,
+            r.order_amount,
+            r.reference,
+            r.confirmed_at ? formatDate(r.confirmed_at) : ""
+          ].map(csvCell).join(",")
+        );
+      });
+
+      const blob = new Blob(
+        ["\uFEFF" + lines.join("\r\n")],
+        { type: "text/csv;charset=utf-8" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download =
+        "tikets-" + new Date().toISOString().slice(0, 10) + ".csv";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(function() {
+        URL.revokeObjectURL(url);
+      }, 5000);
+
+      show(panelMessage, rows.length + " tikè ekspòte.", "success");
+    } catch (error) {
+      show(panelMessage, "Erè: " + error.message, "error");
+    } finally {
+      button.disabled = false;
+    }
   }
 
   function showPanel() {
@@ -490,6 +656,9 @@
 
   document.getElementById("logoutButton")
     .addEventListener("click", logout);
+
+  document.getElementById("exportButton")
+    .addEventListener("click", exportCsv);
 
   // Rekonekte otomatikman nan menm sesyon an
   if (adminPassword) {
