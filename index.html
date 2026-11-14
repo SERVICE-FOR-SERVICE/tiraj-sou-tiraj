@@ -275,6 +275,12 @@
     .orders-close {
       background: #475569;
     }
+
+    /* Paj peman senp: kache anlè paj la ak kat enfòmasyon yo */
+    body.payment-mode header,
+    body.payment-mode main > section.card:not(#orderCard):not(#paymentCard) {
+      display: none;
+    }
   </style>
 </head>
 
@@ -1470,9 +1476,27 @@
 
   refreshEnvelopeBadge();
 
+  // Mòd peman: kache anlè paj la ak kat enfòmasyon yo
+  function syncPaymentMode() {
+    document.body.classList.toggle(
+      "payment-mode",
+      !paymentCard.classList.contains("hidden")
+    );
+  }
+
+  new MutationObserver(function() {
+    syncPaymentMode();
+    window.scrollTo({ top: 0 });
+  }).observe(paymentCard, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+
+  syncPaymentMode();
+
   updateTotal();
 
 </script>
 
 </body>
-        </html>
+</html>
