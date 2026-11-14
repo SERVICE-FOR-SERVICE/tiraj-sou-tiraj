@@ -265,7 +265,7 @@
       height: 22px;
       padding: 0 5px;
       border-radius: 11px;
-      background: #dc2626;
+      background: #16a34a;
       color: white;
       font-size: 13px;
       line-height: 22px;
@@ -306,6 +306,37 @@
       background: #475569;
     }
 
+    /* Règ tiraj la */
+    .rules summary {
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+      color: #075985;
+      line-height: 1.4;
+    }
+
+    .rules h3 {
+      color: #075985;
+      margin: 18px 0 6px;
+      font-size: 17px;
+    }
+
+    .rules p {
+      line-height: 1.6;
+      margin: 6px 0;
+    }
+
+    .rules ul,
+    .rules ol {
+      padding-left: 22px;
+      line-height: 1.6;
+      margin: 6px 0;
+    }
+
+    .rules li {
+      margin-bottom: 4px;
+    }
+
     /* Paj peman senp: kache anlè paj la ak kat enfòmasyon yo */
     body.payment-mode header,
     body.payment-mode main > section.card:not(#orderCard):not(#paymentCard) {
@@ -341,6 +372,101 @@
     <div class="winners-message">
       🎉 10 GAYAN AP GEN CHANS RESEVWA YON PRIM! 🎉
     </div>
+
+  </section>
+
+  <section class="card">
+
+    <details class="rules">
+
+      <summary>📜 Règ tiraj la ak lis prim yo (peze pou li)</summary>
+
+      <h3>Kisa tiraj la ye?</h3>
+      <p>
+        TIRAJ SOU TIRAJ se yon tiraj ak <strong>5000 tikè</strong>
+        (nimewo 1 rive 5000). Chak tikè koute <strong>100 Goud</strong>.
+        <strong>10 gayan</strong> ap resevwa yon prim.
+      </p>
+
+      <h3>🎁 Prim yo</h3>
+      <ul>
+        <li>
+          <strong>🏍️ Gwo prim:</strong> yon moto 150cc tou nèf.
+          Gayan an chwazi ant Dayun, Titan oswa Toro.
+        </li>
+        <li>📺 Televizyon: [KANTITE]</li>
+        <li>📱 Telefòn: [KANTITE]</li>
+        <li>💻 Laptop: [KANTITE]</li>
+        <li>🍚 Sak diri: [KANTITE]</li>
+        <li>🛢️ Galon lwil: [KANTITE]</li>
+        <li>📞 Minit telefonik: [KANTITE OSWA MONTAN]</li>
+      </ul>
+      <p class="small">Total: 10 prim pou 10 gayan.</p>
+
+      <h3>Kijan pou patisipe</h3>
+      <ol>
+        <li>Ranpli non, nimewo telefòn ak kantite tikè w vle.</li>
+        <li>Chwazi MonCash oswa NatCash, epi fè peman an sou nimewo ki parèt la.</li>
+        <li>Voye foto resi a, ak referans tranzaksyon an, nan fòm lan.</li>
+        <li>Administratè a verifye peman an.</li>
+        <li>
+          Lè peman an apwouve, tikè w yo parèt nan anvlòp la ✉️
+          (nan kwen paj la). Ou ka pataje yo la tou.
+        </li>
+      </ol>
+
+      <h3>Kijan nimewo tikè yo bay</h3>
+      <p>
+        Nimewo yo bay o aza, otomatikman, apre apwobasyon peman an.
+        Ou pa ka chwazi nimewo w, e pa gen de moun ki ka gen menm nimewo.
+        Se sèlman tikè valide (peman apwouve) ki antre nan tiraj la.
+      </p>
+
+      <h3>Kijan tiraj la ap fèt</h3>
+      <ul>
+        <li>Dat: [DAT TIRAJ LA]</li>
+        <li>Lè ak kote: [LÈ AK KOTE / PLATFÒM]</li>
+        <li>
+          Nimewo gayan yo ap tire o aza nan mitan tikè valide yo.
+        </li>
+        <li>
+          Gayan yo: [KIJAN GAYAN YO KONTAKTE OSWA PIBLIYE]
+        </li>
+        <li>Prim yo: [KIJAN PRIM YO REMÈT GAYAN YO]</li>
+      </ul>
+
+      <h3>Règ enpòtan</h3>
+      <ul>
+        <li>
+          Yon tikè valide sèlman apre administratè a apwouve peman an.
+          Resi ki poko verifye pa antre nan tiraj la.
+        </li>
+        <li>
+          Peye sèlman sou nimewo ki parèt sou paj peman an, epi voye
+          yon vrè resi ak vrè referans tranzaksyon.
+        </li>
+        <li>
+          Menm referans tranzaksyon pa ka sèvi pou de kòmand diferan.
+          Fo resi yo rejte.
+        </li>
+        <li>
+          Ou gen omaksimòm 2 tantativ pou voye prèv peman pou yon kòmand.
+        </li>
+        <li>
+          Mete yon nimewo telefòn ki bon: se sou li nou ka kontakte w.
+        </li>
+        <li>
+          Ou ka kòmande 1 rive 5000 tikè. Si pa gen ase tikè ki rete,
+          sit la di w konbyen ki rete.
+        </li>
+        <li>
+          Pa janm pataje PIN MonCash oswa NatCash ou ak pèsonn.
+          Nou pa janm mande PIN ou.
+        </li>
+        <li>Pou nenpòt kesyon, kontakte nou sou WhatsApp: 3196-3122.</li>
+      </ul>
+
+    </details>
 
   </section>
 
@@ -1362,12 +1488,7 @@
 
       renderOrders(orders);
 
-      envelopeBadge.textContent = orders.length;
-
-      envelopeBadge.classList.toggle(
-        "hidden",
-        orders.length === 0
-      );
+      updateEnvelopeBadge(orders);
 
     } catch (error) {
 
@@ -1437,18 +1558,28 @@
     );
   }
 
+  // Badge vèt: kantite tikè valide (apwouve) ki nan anvlòp la
+  function updateEnvelopeBadge(orders) {
+
+    const validTickets = orders.reduce(function(total, order) {
+      return total + (order.tickets ? order.tickets.length : 0);
+    }, 0);
+
+    envelopeBadge.textContent = validTickets;
+
+    envelopeBadge.classList.toggle(
+      "hidden",
+      validTickets === 0
+    );
+  }
+
   async function refreshEnvelopeBadge() {
 
     try {
 
       const orders = await fetchMyOrders();
 
-      envelopeBadge.textContent = orders.length;
-
-      envelopeBadge.classList.toggle(
-        "hidden",
-        orders.length === 0
-      );
+      updateEnvelopeBadge(orders);
 
     } catch (error) {
 
@@ -1620,12 +1751,7 @@
 
       renderOrders(orders);
 
-      envelopeBadge.textContent = orders.length;
-
-      envelopeBadge.classList.toggle(
-        "hidden",
-        orders.length === 0
-      );
+      updateEnvelopeBadge(orders);
 
     } catch (error) {
 
