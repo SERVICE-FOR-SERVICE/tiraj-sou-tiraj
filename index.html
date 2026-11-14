@@ -168,9 +168,39 @@
     .notice {
       background: #fff7ed;
       border-left: 4px solid #f97316;
-      padding: 12px;
+      padding: 9px 12px;
       border-radius: 5px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .payment-total {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #065f46;
+      margin: 4px 0 14px;
+    }
+
+    .payment-steps {
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .payment-steps ol {
+      padding-left: 22px;
+      margin: 8px 0;
+    }
+
+    .payment-steps li {
+      margin-bottom: 4px;
+    }
+
+    .payment-pin {
+      font-weight: bold;
+      color: #b45309;
+      margin: 10px 0 0;
     }
 
     .message {
@@ -375,26 +405,22 @@
 
     <h2>2. Fè peman ou</h2>
 
-    <div id="orderDetails" class="message info"></div>
-
     <div class="payment-box">
 
       <p id="paymentTitle"></p>
 
       <div class="payment-number" id="paymentNumber"></div>
 
-      <p>
-        Voye montan egzak la sou nimewo ki parèt anwo a.
-        Kenbe resi tranzaksyon ou an.
-      </p>
+      <p class="payment-total" id="paymentTotal"></p>
+
+      <div class="payment-steps" id="paymentSteps"></div>
 
     </div>
 
     <div class="notice">
       <strong>Enpòtan:</strong>
-      Apre ou fin fè peman an, ranpli fòm ki anba a epi
-      voye foto resi ou. Administratè a dwe verifye peman an
-      anvan tikè yo ka atribye ba ou.
+      Apre peman an, voye foto resi a anba a. Tikè yo atribye
+      lè administratè a verifye peman an.
     </div>
 
     <h2 style="margin-top:25px;">
@@ -437,12 +463,6 @@
         accept="image/jpeg,image/png,image/webp"
         required
       >
-
-      <p class="small">
-        Fòma ki aksepte: JPG, PNG oswa WEBP.
-        Gwosè maksimòm: 5 MB. Ou gen omaksimòm 2 tantativ
-        pou voye prèv pou menm kòmand lan.
-      </p>
 
       <button type="submit" id="proofButton">
         Voye prèv peman an
@@ -544,6 +564,67 @@
     moncash: "3196-3122",
     natcash: "4099-3498"
   };
+
+  const PAYMENT_GUIDES = {
+    moncash: {
+      name: "MonCash",
+      steps: [
+        "Konpoze \"*202#\" sou telefòn ou.",
+        "Chwazi opsyon pou voye lajan bay yon lòt itilizatè MonCash.",
+        "Antre nimewo MonCash peman an: {number}.",
+        "Antre montan kòmand ou a: {amount} Goud.",
+        "Verifye nimewo a ak montan an, epi konfime tranzaksyon an.",
+        "Tann mesaj ki konfime peman an reyisi.",
+        "Fè screenshot mesaj konfimasyon an epi voye li nan fòm ki anba a."
+      ]
+    },
+    natcash: {
+      name: "NatCash",
+      steps: [
+        "Konpoze \"*202#\" sou telefòn ou.",
+        "Chwazi opsyon pou transfè, epi transfè ankò.",
+        "Antre nimewo NatCash peman an: {number}.",
+        "Antre montan kòmand ou a: {amount} Goud.",
+        "Nan kontni an, ekri \"Peye\".",
+        "Verifye montan an, epi konfime tranzaksyon an.",
+        "Tann mesaj ki konfime peman an reyisi.",
+        "Fè screenshot mesaj konfimasyon an epi voye li nan fòm ki anba a."
+      ]
+    }
+  };
+
+  function renderPaymentGuide(method) {
+    const guide = PAYMENT_GUIDES[method];
+    const box = document.getElementById("paymentSteps");
+
+    box.textContent = "";
+
+    if (!guide || !currentOrder) return;
+
+    const title = document.createElement("strong");
+    title.textContent = "Kijan pou fè peman ak " + guide.name + ":";
+    box.appendChild(title);
+
+    const list = document.createElement("ol");
+
+    guide.steps.forEach(function(step) {
+      const item = document.createElement("li");
+
+      item.textContent = step
+        .replace("{number}", PAYMENT_NUMBERS[method])
+        .replace("{amount}", String(currentOrder.amount));
+
+      list.appendChild(item);
+    });
+
+    box.appendChild(list);
+
+    const pin = document.createElement("p");
+    pin.className = "payment-pin";
+    pin.textContent =
+      "Pa pataje PIN " + guide.name + " ou ak pèsonn.";
+    box.appendChild(pin);
+  }
 
   const orderForm = document.getElementById("orderForm");
   const proofForm = document.getElementById("proofForm");
@@ -668,10 +749,11 @@
     document.getElementById("paymentNumber").textContent =
       PAYMENT_NUMBERS[method];
 
-    document.getElementById("orderDetails").textContent =
-      "Kòmand: " + currentOrder.order_id +
-      " | Kantite tikè: " + currentOrder.quantity +
-      " | Total: " + currentOrder.amount + " Goud";
+    document.getElementById("paymentTotal").textContent =
+      "Total: " + currentOrder.quantity + " tikè = " +
+      currentOrder.amount + " Goud";
+
+    renderPaymentGuide(method);
 
     updateProofFormState();
     activateBackGuard();
